@@ -1,10 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<th:block th:fragment="headFragment">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <title>title</title>
+    </head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <style>
+        body {
+            width: 100%;
+            margin: 0 auto;
+        }
+        #container{
+            width: 100%;
+            align-content: center;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: lightslategrey 1px solid;
+        }
+        .item {
+            width: 450px;
+            text-align: center;
+            display: flex;
+            align-items: center; /* 수직 가운데 정렬 */
+        }
+        .icon-img {
+            width: 140px;
+            align-items: center;
+            margin-right: 10px; /* 이미지와 텍스트박스 간의 간격 조정 */
+        }
+        .btn-maker {
+            display: inline-block;
+            border: 1px solid deepskyblue;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 10px;
+        }
+        body {
+            color: #000;
+            background-color: #fff;
+        }
 
-</body>
+        .dark-mode {
+            color: #fff ;
+            background-color: #000;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            $("#logoutBtn").click(function(){
+                location.href="/logout";
+            });
+        });
+        function errorAlert(msg) {
+            Swal.fire({
+                icon: 'warning',
+                title: msg+'!',
+                text: '',
+            });
+        }
+
+        function succesAlert(msg) {
+            Swal.fire({
+                icon: 'success',
+                title: msg
+            });
+        }
+        function changeMode() {
+            if(document.querySelector('body').dataset.theme == ''){
+                document.body.classList.add("dark-mode");
+                document.querySelector('body').dataset.theme = "dark";
+            }else {
+                document.body.classList.remove("dark-mode");
+                document.querySelector('body').dataset.theme = "";
+            }
+        }
+    </script>
+    <body data-theme="">
+    <div th:fragment="common1" id="container">
+        <div class="item">
+            <span>
+                <img class="icon-img" th:src="@{/img/icon.png}" alt="icon">
+            </span>
+            <span>
+                <label for="search"><input type="text" id="search"></label>
+                <button>검색/게시판 찾기</button>
+            </span>
+        </div>
+        <div class="item">
+            <span></span>
+        </div>
+        <div class="item" th:if="${session.userId}==null">
+            <span>
+                <a>중고장터</a>
+                <span>&nbsp;&nbsp;</span>
+                <span>
+                    <div class="btn-maker">
+                        <span onclick="changeMode()">
+                            <div>
+                                다크모드
+                            </div>
+                        </span>
+                    </div>
+                    <div class="btn-maker">
+                        <span onclick="location.href='../member/login'">
+                            로그인
+                        </span>
+                    </div>
+                </span>
+                <span>
+
+                </span>
+            </span>
+        </div>
+    </div>
+    </body>
+</th:block>
 </html>
